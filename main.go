@@ -33,7 +33,9 @@ func parse(args []string) string {
 }
 
 func initRouter(g *gin.Engine) {
+	g.GET("/hello", controller.Hello)
 	ug := g.Group("/douyin")
+
 	ug.GET("/feed", controller.Feed)
 	ug.POST("/user/login", controller.Login)
 	ug.POST("/user/logout", controller.Logout)
