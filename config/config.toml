@@ -1,0 +1,44 @@
+# 服务器配置
+[server]
+port = ":8080"
+
+# mysql配置项
+[mysql]
+ip = "127.0.0.1"
+port = "3306"
+database = "douyin"
+username = "root"
+password = ""
+max_idle_conns = 50
+Max_open_conns = 100
+
+# mongodb配置项
+[mongodb]
+ip = "192.168.31.31"
+port = 27017
+database = "api_test"
+
+# 认证配置
+[jwt]
+sign_key = "123456"
+expires_time = 3000
+issuer = "molong"
+# redis配置
+
+[redis]
+dial = "tcp"
+ip = "192.168.137.103"
+port = "6379"
+password = "123123"
+pool_size = 1000
+database = 1
+max-idle = 1
+max-active = 10
+
+
+[logger]
+file_path = './logs/'
+file_name = 'system.log'
+max_size = 10
+max_age = 10
+max_backups = 1
