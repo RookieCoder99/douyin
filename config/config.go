@@ -1,16 +1,14 @@
 package config
 
 import (
-	"fmt"
 	"github.com/BurntSushi/toml"
 )
 
 type Config struct {
 	Server Server
 	Mysql  Mysql
-	Jwt    Jwt
 	Redis  Redis
-	Logger Logger
+	//Logger Logger
 }
 
 type Mysql struct {
@@ -40,34 +38,28 @@ type Redis struct {
 	MaxActive int    `toml:"max-active"`
 }
 
-type Mongodb struct {
-	Ip       string
-	Port     string
-	Database string
-}
-
-func (m *Mongodb) Link() string {
-	return fmt.Sprintf("mongodb://%s:%d", m.Ip, m.Port)
-}
+//type Mongodb struct {
+//	Ip       string
+//	Port     string
+//	Database string
+//}
+//
+//func (m *Mongodb) Link() string {
+//	return fmt.Sprintf("mongodb://%s:%d", m.Ip, m.Port)
+//}
 
 type Server struct {
 	Port   string `toml:"port"`   // 地址
 	Status string `toml:"status"` // 状态
 }
 
-type Jwt struct {
-	SignKey     string `toml:"sign_key"`
-	ExpiresTime int64  `toml:"expires_time"`
-	Issuer      string
-}
-
-type Logger struct {
-	FilePath   string `toml:"file_path"`
-	FileName   string `toml:"file_name"` // 日志文件路径
-	MaxSize    int    `toml:"max_size"`
-	MaxAge     int    `toml:"max_age"`
-	MaxBackups int    `toml:"max_backups"`
-}
+//type Logger struct {
+//	FilePath   string `toml:"file_path"`
+//	FileName   string `toml:"file_name"` // 日志文件路径
+//	MaxSize    int    `toml:"max_size"`
+//	MaxAge     int    `toml:"max_age"`
+//	MaxBackups int    `toml:"max_backups"`
+//}
 
 // 默认的配置文件路由
 const ConfigPath = "./config/config.toml"

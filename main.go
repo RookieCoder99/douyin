@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	common.Config = config.InitConfig(parse(os.Args))
+	common.Config = config.InitConfig(parse(os.Args)) // func() -> int
 
 	// 初始化数据库等连接
 	common.Init()
