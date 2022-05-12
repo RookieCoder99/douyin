@@ -4,9 +4,10 @@ import (
 	"douyin/common"
 	"douyin/config"
 	"douyin/controller"
-	"github.com/gin-gonic/gin"
 	"os"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
