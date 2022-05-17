@@ -1,23 +1,23 @@
 # 服务器配置
 [server]
-port = ":11111"
+port = ":8080"
 
 # mysql配置项
 [mysql]
-ip = "127.0.0.1"
+ip = "47.108.59.83"
 port = "3306"
 database = "douyin"
 username = "root"
-password = "root"
+password = "qxy20220511/*-"
 max_idle_conns = 50
 Max_open_conns = 100
 
 # redis配置
 [redis]
 dial = "tcp"
-ip = "127.0.0.1"
+ip = "47.108.59.83"
 port = "6379"
-password = ""
+password = "qxy20220511/*-"
 pool_size = 1000
 database = 1
 max-idle = 1

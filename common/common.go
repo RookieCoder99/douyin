@@ -4,6 +4,7 @@ import (
 	"context"
 	"douyin/config"
 	"douyin/model"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"gorm.io/driver/mysql"
@@ -51,6 +52,7 @@ func initMysqlDB() *gorm.DB {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
+		fmt.Println(dsn)
 		log.Fatal("数据库连接失败 ", err)
 		return nil
 	}
