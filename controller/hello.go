@@ -6,5 +6,5 @@ import (
 )
 
 func Hello(c *gin.Context) {
-	common.RespData(c, common.OK, common.RespMsg[common.OK])
+	common.Resp0(c, common.OK, common.RespMsg[common.OK])
 }

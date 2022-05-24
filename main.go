@@ -18,7 +18,7 @@ func main() {
 	router := gin.Default()
 	initRouter(router)
 
-	router.Run(common.Config.Server.Port)
+	router.Run()
 }
 
 // parse 解析参数
@@ -34,25 +34,25 @@ func parse(args []string) string {
 
 func initRouter(g *gin.Engine) {
 	g.GET("/hello", controller.Hello)
-	ug := g.Group("/douyin")
+	apiRouter := g.Group("/douyin")
 
-	ug.GET("/feed", controller.Feed)
-	ug.POST("/user/login", controller.Login)
-	ug.POST("/user/logout", controller.Logout)
-	ug.POST("/user/register", controller.Register)
-	ug.GET("/user", controller.UserInfo)
+	// basic apis
+	apiRouter.GET("/feed/", controller.Feed)
+	apiRouter.GET("/user/", controller.UserInfo)
+	apiRouter.POST("/user/register/", controller.Register)
+	apiRouter.POST("/user/login/", controller.Login)
+	apiRouter.POST("/publish/action/", controller.PublishAction)
+	apiRouter.GET("/publish/list/", controller.PublishList)
 
-	ug.POST("/publish/action", controller.PublishAction)
-	ug.GET("/publish/action", controller.PublishAction)
+	// extra apis - I
+	apiRouter.POST("/favorite/action/", controller.FavoriteAction)
+	apiRouter.GET("/favorite/list/", controller.FavoriteList)
+	apiRouter.POST("/comment/action/", controller.CommentAction)
+	apiRouter.GET("/comment/list/", controller.CommentList)
 
-	ug.POST("/favorite/action", controller.FavoriteAction)
-	ug.GET("/favorite/list", controller.FavoriteList)
-
-	ug.POST("/comment/action", controller.CommentAction)
-	ug.GET("/comment/list", controller.CommentList)
-
-	ug.POST("/relation/action", controller.RelationAction)
-	ug.GET("/relation/follow/list", controller.FollowList)
-	ug.GET("/relation/follower/list", controller.FollowerList)
+	// extra apis - II
+	apiRouter.POST("/relation/action/", controller.RelationAction)
+	apiRouter.GET("/relation/follow/list/", controller.FollowList)
+	apiRouter.GET("/relation/follower/list/", controller.FollowerList)
 
 }

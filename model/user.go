@@ -1,31 +1,22 @@
 package model
 
+import "time"
+
 type TUser struct {
-	Id            int64
+	ID            int64 `gorm:"primaryKey autoIncrement"`
 	Username      string
+	Nickname      string
 	Password      string
 	Token         string
 	FollowCount   int64
 	FollowerCount int64
-	IsFollow      bool
+	CreatedAt     time.Time
 }
 
 type User struct {
-	Id            int64
-	Name          string
-	FollowCount   int64
-	FollowerCount int64
-	IsFollow      bool
-}
-
-type LoginRequest struct {
-	Username string
-	Password string
-}
-
-type LoginResponse struct {
-	StatusCode int32
-	StatusMsg  string
-	UserId     int64
-	Token      string
+	Id            int64  `json:"id,omitempty"`
+	Name          string `json:"name,omitempty"`
+	FollowCount   int64  `json:"follow_count,omitempty"`
+	FollowerCount int64  `json:"follower_count,omitempty"`
+	IsFollow      bool   `json:"is_follow,omitempty"`
 }
