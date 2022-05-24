@@ -4,6 +4,7 @@ import (
 	"context"
 	"douyin/config"
 	"douyin/model"
+	"douyin/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"gorm.io/driver/mysql"
@@ -18,6 +19,7 @@ var (
 	Config config.Config
 	Db     *gorm.DB
 	Rdb    *redis.Client
+	Rmq    *utils.Session
 )
 
 // redis key前缀
@@ -37,22 +39,21 @@ const (
 
 const (
 	OK                  int32 = 0
-	ParamInvalid        int32 = 1  // 参数不合法
-	UserHasExisted      int32 = 2  // 该 Username 已存在
-	UserHasDeleted      int32 = 3  // 用户已删除
-	UserNotExisted      int32 = 4  // 用户不存在
-	WrongPassword       int32 = 5  // 密码错误
-	LoginRequired       int32 = 6  // 用户未登录
-	UploadError         int32 = 7  //视频上传失败
-	FavoriteActionError int32 = 8  //点赞失败
-	FavoriteCancelError int32 = 9  //点赞取消失败
-	CommentActionError  int32 = 10 //评论失败
-	CommentDeleteError  int32 = 11 //评论取消失败
-	FollowActionError   int32 = 12 //关注失败
-	FollowCancelError   int32 = 13 //关注取消失败
-
-	RepeatRequest int32 = 254 // 重复请求
-	UnknownError  int32 = 255 // 未知错误
+	ParamInvalid        int32 = 1   // 参数不合法
+	UserHasExisted      int32 = 2   // 该 Username 已存在
+	UserHasDeleted      int32 = 3   // 用户已删除
+	UserNotExisted      int32 = 4   // 用户不存在
+	WrongPassword       int32 = 5   // 密码错误
+	LoginRequired       int32 = 6   // 用户未登录
+	UploadError         int32 = 7   //视频上传失败
+	FavoriteActionError int32 = 8   //点赞失败
+	FavoriteCancelError int32 = 9   //点赞取消失败
+	CommentActionError  int32 = 10  //评论失败
+	CommentDeleteError  int32 = 11  //评论取消失败
+	FollowActionError   int32 = 12  //关注失败
+	FollowCancelError   int32 = 13  //关注取消失败
+	RepeatRequest       int32 = 254 // 重复请求
+	UnknownError        int32 = 255 // 未知错误
 
 )
 
@@ -72,6 +73,7 @@ var RespMsg = map[int32]string{
 func Init() {
 	Db = initMysqlDB()
 	Rdb = initRedisClient()
+	//Rmq = initRabbitmq()
 }
 
 func initMysqlDB() *gorm.DB {
@@ -121,6 +123,24 @@ func initRedisClient() *redis.Client {
 	//rdb.Set(ctx, "test", "test", 10*time.Second)
 	return rdb
 }
+
+func initRabbitmq() *utils.Session {
+	Rmq = utils.New(Config.RabbitMQ.Queue, Config.RabbitMQ.Url)
+	//return Rmq
+
+	//message := []byte("message")
+	// Attempt to push a message every 2 seconds
+	//for {
+	//	time.Sleep(time.Second * 2)
+	//	if err := queue.Push(message); err != nil {
+	//		fmt.Printf("Push failed: %s\n", err)
+	//	} else {
+	//		fmt.Println("Push succeeded!")
+	//	}
+	//}
+	return Rmq
+}
+
 func Resp(c *gin.Context, resMap map[string]interface{}) {
 	c.JSON(http.StatusOK, resMap)
 }

@@ -8,6 +8,7 @@ type TVideo struct {
 	PlayUrl   string
 	CoverUrl  string
 	CreatedAt time.Time
+	Title     string
 }
 
 type Video struct {
@@ -18,4 +19,5 @@ type Video struct {
 	FavoriteCount int64  `json:"favorite_count,omitempty"`
 	CommentCount  int64  `json:"comment_count,omitempty"`
 	IsFavorite    bool   `json:"is_favorite,omitempty"`
+	Title         string `json:"title, omitempty"`
 }

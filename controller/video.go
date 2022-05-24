@@ -14,26 +14,6 @@ import (
 	"time"
 )
 
-var DemoUser = model.User{
-	Id:            1,
-	Name:          "TestUser",
-	FollowCount:   0,
-	FollowerCount: 0,
-	IsFollow:      false,
-}
-
-//var DemoVideos = []model.Video{
-//	{
-//		Id:            1,
-//		User:          DemoUser,
-//		PlayUrl:       "http://rbppmzeve.hn-bkt.clouddn.com/image/3_VID20220329145028.mp4_1652274742010443500",
-//		CoverUrl:      "http://rbppmzeve.hn-bkt.clouddn.com/image/3_wx_camera_1651571302583.mp4_1652277588633461800?vframe%2fjpg%2foffset%2f7%2fw%2f480%2fh%2f360",
-//		FavoriteCount: 0,
-//		CommentCount:  0,
-//		IsFavorite:    false,
-//	},
-//}
-
 type VideoListResponse struct {
 	model.Response
 	VideoList []model.Video `json:"video_list"`
@@ -67,6 +47,7 @@ func PublishAction(c *gin.Context) {
 	//token := c.Query("token")
 	//uId := c.Query("user_id")
 	//token, _ := c.GetPostForm("user_id")
+	title, _ := c.GetPostForm("title")
 	token, _ := c.GetPostForm("token")
 	log.Println(token)
 	//log.Println(uId)
@@ -98,8 +79,8 @@ func PublishAction(c *gin.Context) {
 			StatusMsg:  data.Filename + common.RespMsg[common.UploadError],
 		})
 	}
-	// TODO 封面url未设置
-	service.UploadVideo(videoUrl, tUser.ID, coverUrl)
+	//TODO 封面url未设置
+	service.UploadVideo(videoUrl, tUser.ID, coverUrl, title)
 	log.Printf(" 上传状态 %v", status)
 
 	c.JSON(http.StatusOK, model.Response{

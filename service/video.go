@@ -7,11 +7,12 @@ import (
 	"time"
 )
 
-func UploadVideo(url string, userId int64, coverUrl string) *model.TVideo {
+func UploadVideo(url string, userId int64, coverUrl string, title string) *model.TVideo {
 	var video = model.TVideo{
 		AuthorID: userId,
 		PlayUrl:  url,
 		CoverUrl: coverUrl,
+		Title:    title,
 	}
 	v := dao.InsertVideo(&video)
 

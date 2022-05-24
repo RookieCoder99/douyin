@@ -4,24 +4,38 @@ port = ":8080"
 
 # mysql配置项
 [mysql]
-ip = "127.0.0.1"
+# ip = "127.0.0.1"
+# database = "douyin"
+# password = ""
+ip = "47.108.59.83"
+database = "dou_yin"
+password = "qxy20220511/*-"
+
 port = "3306"
-database = "douyin"
 username = "root"
-password = ""
+
 max_idle_conns = 50
 Max_open_conns = 100
 
 # redis配置
 [redis]
 dial = "tcp"
-ip = "192.168.137.103"
+# ip = "192.168.137.103"
+# password = "123123"
+
+ip = "47.108.59.83"
+password = "qxy20220511/*-"
 port = "6379"
-password = "123123"
+
 pool_size = 1000
 database = 1
 max-idle = 1
 max-active = 10
+
+# [rabbitmq]
+url = "amqp://admin123:qxy20220511/*-@47.108.59.83/douyin"
+queue ="douyin_queue"
+
 
 # [logger]
 # file_path = './logs/'

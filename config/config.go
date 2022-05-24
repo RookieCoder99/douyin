@@ -5,9 +5,10 @@ import (
 )
 
 type Config struct {
-	Server Server
-	Mysql  Mysql
-	Redis  Redis
+	Server   Server
+	Mysql    Mysql
+	Redis    Redis
+	RabbitMQ RabbitMQ
 	//Logger Logger
 }
 
@@ -19,6 +20,11 @@ type Mysql struct {
 	Database     string `toml:"database"`
 	MaxIdleConns int    `toml:"max_idle_conns"`
 	MaxOpenConns int    `toml:"max_open_conns"`
+}
+
+type RabbitMQ struct {
+	Url   string `toml: "url"`
+	Queue string `toml: "queue"`
 }
 
 type Captcha struct {
