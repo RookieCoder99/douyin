@@ -1,4 +1,5 @@
 ## 使用
+
 - git clone https://github.com/mkm1539806431/douyin.git
 - 修改config/config.toml文件中的mysql, redis等配置信息
 - cd douyin
