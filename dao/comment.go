@@ -17,6 +17,22 @@ func GetCommentCountByVideoId(videoId int64) *int64 {
 	return &count
 }
 
+func GetCommentByCommentId(commentId int64) *model.Comment {
+	var comment model.Comment
+	res := common.Db.Table("t_comment").
+		Select(" t_comment.id,  t_comment.comment_text as content, t_comment.created_at as create_date, "+
+			"tu.id as id, tu.username as name, tu.follow_count as follow_count, tu.follower_count as follower_count").
+		Joins("left join t_user tu on t_comment.user_id = tu.id ").
+		Where("t_comment.id = ?", commentId).First(&comment)
+
+	if res.Error != nil {
+		log.Println(res.Error.Error())
+		return nil
+	}
+
+	return &comment
+}
+
 func InsertComment(comment *model.TComment) bool {
 	res := common.Db.Create(comment)
 	if res.Error != nil {
@@ -42,6 +58,7 @@ func GetCommentByVideoId(videoId int64) []model.Comment {
 			"tu.id as id, tu.username as name, tu.follow_count as follow_count, tu.follower_count as follower_count").
 		Joins("left join t_user tu on t_comment.user_id = tu.id ").
 		Where("t_comment.video_id = ? ", videoId).
+		Order("create_date DESC").
 		Find(&comments)
 	if res.Error != nil {
 		log.Println(res.Error.Error())
