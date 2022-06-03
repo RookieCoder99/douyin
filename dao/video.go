@@ -85,8 +85,8 @@ func GetVideoListByTime(timeStr string) ([]model.Video, time.Time) {
 			"(select count(*) from t_comment tc where tc.video_id = t_video.id)  comment_count, "+
 			"(select count(*) from t_favorite tf where tf.user_id = tu.id and tf.video_id = t_video.id)>0  is_favorite ").
 		Joins("left join t_user tu on t_video.author_id = tu.id ").
-		Where("t_video.created_at <? ", timeStr).
-		Order("t_video.created_at").
+		Where("t_video.created_at <=? ", timeStr).
+		Order("t_video.created_at desc").
 		Find(&videos)
 
 	//res1 := common.Db.Raw("select t_video.id, t_video.play_url, t_video.cover_url, t_video.title, " +

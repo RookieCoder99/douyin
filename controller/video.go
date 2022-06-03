@@ -40,8 +40,11 @@ func Feed(c *gin.Context) {
 	c.JSON(http.StatusOK, FeedResponse{
 		Response:  model.Response{StatusCode: 0},
 		VideoList: videoList,
-		NextTime:  timeRes.Unix(),
+		NextTime:  timeRes.UnixMilli(),
 	})
+	//	1653382450559
+	//	1653382450559
+	//  1654239220306
 }
 func PublishAction(c *gin.Context) {
 	//token := c.Query("token")
@@ -101,7 +104,13 @@ func PublishList(c *gin.Context) {
 	json.Unmarshal([]byte(userJson), &tUser)
 
 	videoList := service.GetVideoListByUserId(tUser.ID)
-
+	for _, video := range videoList {
+		id := strconv.FormatInt(video.User.Id, 10)
+		followCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowCountPrefix+id).Val(), 10, 64)
+		followerCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowerCountPrefix+id).Val(), 10, 64)
+		video.User.FollowCount = followCount
+		video.User.FollowerCount = followerCount
+	}
 	c.JSON(http.StatusOK, VideoListResponse{
 		Response: model.Response{
 			StatusCode: 0,

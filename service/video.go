@@ -31,7 +31,7 @@ func GetVideoList(timeUnix string) ([]model.Video, time.Time) {
 		videoList, latestTime = dao.GetVideoList()
 	} else {
 		unix, _ := strconv.ParseInt(timeUnix, 10, 64)
-		timeStr := time.UnixMilli(unix).Format("2006-01-02 15:04:05.123")
+		timeStr := time.UnixMilli(unix).Format("2006-01-02 15:04:05.999")
 		videoList, latestTime = dao.GetVideoListByTime(timeStr)
 	}
 

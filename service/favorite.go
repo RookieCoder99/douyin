@@ -4,9 +4,10 @@ import (
 	"douyin/common"
 	"douyin/dao"
 	"douyin/model"
-	"github.com/gin-gonic/gin"
 	"log"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func InsertFavorite(c *gin.Context, userId, videoId int64) bool {
