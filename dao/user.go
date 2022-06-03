@@ -42,3 +42,32 @@ func InsertUser(user *model.TUser) *model.TUser {
 	//mid := strconv.FormatInt(m.ID, 10)
 	return &m
 }
+
+// 当前用户id和 查询的用户id
+func GetUserById(userId int64) model.User {
+	//type User struct {
+	//	Id            int64  `json:"id,omitempty"`
+	//	Name          string `json:"name,omitempty"`
+	//	FollowCount   int64  `json:"follow_count,omitempty"`
+	//	FollowerCount int64  `json:"follower_count,omitempty"`
+	//	IsFollow      bool   `json:"is_follow,omitempty"`
+	//}
+	var user model.User
+	common.Db.Table("t_user").Select("id, username as name ").Where("userId=?", userId).Find(&user)
+	return user
+
+}
+
+func CheckRelation(otherId int64, userId int64) bool {
+	//type User struct {
+	//	Id            int64  `json:"id,omitempty"`
+	//	Name          string `json:"name,omitempty"`
+	//	FollowCount   int64  `json:"follow_count,omitempty"`
+	//	FollowerCount int64  `json:"follower_count,omitempty"`
+	//	IsFollow      bool   `json:"is_follow,omitempty"`
+	//}
+	var relation model.TRelation
+	count := common.Db.Table("t_relation").Where("follow_id=? and follower_id = ?", otherId, userId).Find(&relation).RowsAffected
+	return count > 0
+
+}
