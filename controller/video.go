@@ -95,6 +95,7 @@ func PublishAction(c *gin.Context) {
 
 func PublishList(c *gin.Context) {
 	token := c.Query("token")
+	userId := c.Query("user_id")
 	userJson := common.Rdb.Get(c, common.UserLoginPrefix+token).Val()
 	if userJson == "" {
 		c.JSON(http.StatusOK, model.Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
@@ -102,15 +103,16 @@ func PublishList(c *gin.Context) {
 	}
 	var tUser model.TUser
 	json.Unmarshal([]byte(userJson), &tUser)
+	uId, _ := strconv.ParseInt(userId, 10, 64)
+	videoList := service.GetVideoListByUserId(c, uId)
 
-	videoList := service.GetVideoListByUserId(c, tUser.ID)
-	for _, video := range videoList {
-		id := strconv.FormatInt(video.User.Id, 10)
-		followCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowCountPrefix+id).Val(), 10, 64)
-		followerCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowerCountPrefix+id).Val(), 10, 64)
-		video.User.FollowCount = followCount
-		video.User.FollowerCount = followerCount
-	}
+	//for _, video := range videoList {
+	//	id := strconv.FormatInt(video.User.Id, 10)
+	//	followCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowCountPrefix+id).Val(), 10, 64)
+	//	followerCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowerCountPrefix+id).Val(), 10, 64)
+	//	video.User.FollowCount = followCount
+	//	video.User.FollowerCount = followerCount
+	//}
 	c.JSON(http.StatusOK, VideoListResponse{
 		Response: model.Response{
 			StatusCode: 0,

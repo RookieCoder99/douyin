@@ -40,7 +40,6 @@ func CommentAction(c *gin.Context) {
 		comment := service.CreateAndReturnComment(tUser.ID, vId, commentText)
 
 		if comment == nil {
-
 			c.JSON(http.StatusOK, model.Response{
 				StatusCode: common.CommentActionError,
 				StatusMsg:  common.RespMsg[common.CommentActionError],
