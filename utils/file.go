@@ -27,7 +27,7 @@ func UploadToQiNiu(file *multipart.FileHeader) (int, string, string) {
 	var AccessKey = "1-kzJOvB1oQ40HMO9xSTjWDBv3ARrZWDMBFWxjDS"
 	var SerectKey = "7uAxrKuIp2XXC10kAkVBrPNTkZ4l_2Q9otT3rUFt"
 	var Bucket = "videodouyin"
-	var ImgUrl = "rcw3mo7gu.hn-bkt.clouddn.com"
+	var ImgUrl = "http://rcw3mo7gu.hn-bkt.clouddn.com/"
 
 	src, err := file.Open()
 	if err != nil {

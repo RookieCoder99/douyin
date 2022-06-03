@@ -7,15 +7,17 @@ port = ":8080"
 # ip = "127.0.0.1"
 # database = "douyin"
 # password = ""
-# ip = "47.108.59.83"
-# database = "dou_yin"
-# password = "qxy20220511/*-"
-
-ip = "8.134.34.95"
-password = "root"
-database = "douyin"
+ip = "47.108.59.83"
+database = "dou_yin"
+password = "qxy20220511/*-"
 port = "3306"
 username = "root"
+
+# ip = "8.134.34.95"
+# password = "root"
+# database = "douyin"
+# port = "3306"
+# username = "root"
 
 max_idle_conns = 50
 Max_open_conns = 100
