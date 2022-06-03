@@ -23,6 +23,14 @@ func InsertFavorite(c *gin.Context, userId, videoId int64) bool {
 	uId := strconv.FormatInt(userId, 10)
 	common.Rdb.SAdd(c, common.UserFavoriteVideoPrefix+uId, vId)
 
+	// 用户点赞过的作品数量+1
+	common.Rdb.Incr(c, common.UserFavoriteCountPrefix+uId)
+
+	videoUserId := dao.GetUserIdByVideoId(videoId)
+	vuId := strconv.FormatInt(videoUserId, 10)
+	// 被点赞用户赞的数量+1
+	common.Rdb.Incr(c, common.UserTotalFavoritedPrefix+vuId)
+
 	return dao.InsertFavorite(&favorite)
 }
 
@@ -34,10 +42,17 @@ func DeleteFavorite(c *gin.Context, userId, videoId int64) bool {
 	uId := strconv.FormatInt(userId, 10)
 	common.Rdb.SRem(c, common.UserFavoriteVideoPrefix+uId, vId)
 
+	common.Rdb.Decr(c, common.UserFavoriteCountPrefix+uId)
+
+	videoUserId := dao.GetUserIdByVideoId(videoId)
+	vuId := strconv.FormatInt(videoUserId, 10)
+	// 被点赞用户赞的数量+1
+	common.Rdb.Decr(c, common.UserTotalFavoritedPrefix+vuId)
+
 	return dao.DeleteFavorite(userId, videoId)
 }
 
-func GetFavoriteList(c *gin.Context, userId int64) []model.Video {
+func GetFavoriteList(c *gin.Context, userId int64) []*model.Video {
 	uId := strconv.FormatInt(userId, 10)
 	vIds, err := common.Rdb.SMembers(c, common.UserFavoriteVideoPrefix+uId).Result()
 	if err != nil {

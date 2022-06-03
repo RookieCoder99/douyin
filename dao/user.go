@@ -3,6 +3,7 @@ package dao
 import (
 	"douyin/common"
 	"douyin/model"
+	"fmt"
 	"log"
 )
 
@@ -44,7 +45,7 @@ func InsertUser(user *model.TUser) *model.TUser {
 }
 
 // 当前用户id和 查询的用户id
-func GetUserById(userId int64) model.User {
+func GetUserById(userId int64) *model.TUser {
 	//type User struct {
 	//	Id            int64  `json:"id,omitempty"`
 	//	Name          string `json:"name,omitempty"`
@@ -52,9 +53,12 @@ func GetUserById(userId int64) model.User {
 	//	FollowerCount int64  `json:"follower_count,omitempty"`
 	//	IsFollow      bool   `json:"is_follow,omitempty"`
 	//}
-	var user model.User
-	common.Db.Table("t_user").Select("id, username as name ").Where("userId=?", userId).Find(&user)
-	return user
+	var user model.TUser
+	res := common.Db.Table("t_user").Where("id=?", userId).Find(&user)
+	if res.Error != nil {
+		fmt.Println(res.Error)
+	}
+	return &user
 
 }
 

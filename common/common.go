@@ -33,8 +33,11 @@ const (
 	UserHasVideoPrefix      = "USER_HAS_VIDEO_SET:"
 	UserFavoriteVideoPrefix = "USER_FAVORITE_VIDEO_SET:"
 
-	UserFollowPrefix   = "USER_FOLLOW_SET"
-	UserFollowerPrefix = "USER_FOLLOWER_SET"
+	UserFollowPrefix   = "USER_FOLLOW_SET:"
+	UserFollowerPrefix = "USER_FOLLOWER_SET:"
+
+	UserTotalFavoritedPrefix = "USER_Total_Favorited:"
+	UserFavoriteCountPrefix  = "USER_Favorite_Count:"
 )
 
 const (
@@ -121,6 +124,7 @@ func initRedisClient() *redis.Client {
 	}
 	//time.Sleep(time.Second * 2)
 	//rdb.Set(ctx, "test", "test", 10*time.Second)
+
 	return rdb
 }
 

@@ -16,7 +16,7 @@ import (
 
 type VideoListResponse struct {
 	model.Response
-	VideoList []model.Video `json:"video_list"`
+	VideoList []*model.Video `json:"video_list"`
 }
 
 type FeedRequest struct {
@@ -25,8 +25,8 @@ type FeedRequest struct {
 
 type FeedResponse struct {
 	model.Response
-	VideoList []model.Video `json:"video_list,omitempty"`
-	NextTime  int64         `json:"next_time,omitempty"`
+	VideoList []*model.Video `json:"video_list,omitempty"`
+	NextTime  int64          `json:"next_time,omitempty"`
 }
 
 func Feed(c *gin.Context) {
@@ -35,7 +35,7 @@ func Feed(c *gin.Context) {
 	if latestTimeVal > time.Now().UnixMilli() {
 		latestTimeVal = time.Now().UnixMilli()
 	}
-	videoList, timeRes := service.GetVideoList(strconv.FormatInt(latestTimeVal, 10))
+	videoList, timeRes := service.GetVideoList(c, strconv.FormatInt(latestTimeVal, 10))
 
 	c.JSON(http.StatusOK, FeedResponse{
 		Response:  model.Response{StatusCode: 0},
@@ -103,7 +103,7 @@ func PublishList(c *gin.Context) {
 	var tUser model.TUser
 	json.Unmarshal([]byte(userJson), &tUser)
 
-	videoList := service.GetVideoListByUserId(tUser.ID)
+	videoList := service.GetVideoListByUserId(c, tUser.ID)
 	for _, video := range videoList {
 		id := strconv.FormatInt(video.User.Id, 10)
 		followCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowCountPrefix+id).Val(), 10, 64)
