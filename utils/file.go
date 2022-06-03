@@ -19,10 +19,15 @@ import (
 // 上传图片到七牛云，然后返回状态和图片的url
 func UploadToQiNiu(file *multipart.FileHeader) (int, string, string) {
 
-	var AccessKey = "_OBtN_TsdTp7_CFMu423WOBCQe3Nf9rAk5GURp1E" // 秘钥对
-	var SerectKey = "VK49p-yXFAjWvycZnzwKi0VHW4DDqFCabn_RdNY4"
-	var Bucket = "douyin-video"                         // 空间名称
-	var ImgUrl = "http://rbppmzeve.hn-bkt.clouddn.com/" // 自定义域名或测试域名
+	//var AccessKey = "_OBtN_TsdTp7_CFMu423WOBCQe3Nf9rAk5GURp1E" // 秘钥对
+	//var SerectKey = "VK49p-yXFAjWvycZnzwKi0VHW4DDqFCabn_RdNY4"
+	//var Bucket = "douyin-video" // 空间名称
+	////var ImgUrl = "http://rbppmzeve.hn-bkt.clouddn.com/" // 自定义域名或测试域名
+
+	var AccessKey = "1-kzJOvB1oQ40HMO9xSTjWDBv3ARrZWDMBFWxjDS"
+	var SerectKey = "7uAxrKuIp2XXC10kAkVBrPNTkZ4l_2Q9otT3rUFt"
+	var Bucket = "videodouyin"
+	var ImgUrl = "rcw3mo7gu.hn-bkt.clouddn.com"
 
 	src, err := file.Open()
 	if err != nil {
@@ -74,7 +79,7 @@ func UploadToQiNiu(file *multipart.FileHeader) (int, string, string) {
 	}
 
 	url := ImgUrl + ret.Key // 返回上传后的文件访问路径
-	imgUrl := ImgUrl + "XlMSXysTOOFC84dEL3HgtjKxtAY=/" + ret.Hash
+	imgUrl := ImgUrl + "XlMSXysTOOFC84dEL3HgtjKxtAY=" + ret.Hash
 	return 0, url, imgUrl
 }
 
