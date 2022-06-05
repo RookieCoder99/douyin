@@ -108,6 +108,9 @@ func GetVideoListByTime(timeStr string) ([]*model.Video, time.Time) {
 	//	"order by t_video.created_at " +
 	//	"limit 30").Scan(&videos)
 
+	if len(videos) == 0 {
+		return videos, time.Now()
+	}
 	var v model.TVideo
 	res2 := common.Db.Where("id=?", videos[0].Id).First(&v)
 	if res1.Error != nil {
