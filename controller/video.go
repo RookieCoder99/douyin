@@ -16,7 +16,7 @@ import (
 
 type VideoListResponse struct {
 	model.Response
-	VideoList []model.Video `json:"video_list"`
+	VideoList []*model.Video `json:"video_list"`
 }
 
 type FeedRequest struct {
@@ -25,8 +25,8 @@ type FeedRequest struct {
 
 type FeedResponse struct {
 	model.Response
-	VideoList []model.Video `json:"video_list,omitempty"`
-	NextTime  int64         `json:"next_time,omitempty"`
+	VideoList []*model.Video `json:"video_list,omitempty"`
+	NextTime  int64          `json:"next_time,omitempty"`
 }
 
 func Feed(c *gin.Context) {
@@ -35,13 +35,16 @@ func Feed(c *gin.Context) {
 	if latestTimeVal > time.Now().UnixMilli() {
 		latestTimeVal = time.Now().UnixMilli()
 	}
-	videoList, timeRes := service.GetVideoList(strconv.FormatInt(latestTimeVal, 10))
+	videoList, timeRes := service.GetVideoList(c, strconv.FormatInt(latestTimeVal, 10))
 
 	c.JSON(http.StatusOK, FeedResponse{
 		Response:  model.Response{StatusCode: 0},
 		VideoList: videoList,
-		NextTime:  timeRes.Unix(),
+		NextTime:  timeRes.UnixMilli(),
 	})
+	//	1653382450559
+	//	1653382450559
+	//  1654239220306
 }
 func PublishAction(c *gin.Context) {
 	//token := c.Query("token")
@@ -92,6 +95,7 @@ func PublishAction(c *gin.Context) {
 
 func PublishList(c *gin.Context) {
 	token := c.Query("token")
+	userId := c.Query("user_id")
 	userJson := common.Rdb.Get(c, common.UserLoginPrefix+token).Val()
 	if userJson == "" {
 		c.JSON(http.StatusOK, model.Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
@@ -99,9 +103,16 @@ func PublishList(c *gin.Context) {
 	}
 	var tUser model.TUser
 	json.Unmarshal([]byte(userJson), &tUser)
+	uId, _ := strconv.ParseInt(userId, 10, 64)
+	videoList := service.GetVideoListByUserId(c, uId)
 
-	videoList := service.GetVideoListByUserId(tUser.ID)
-
+	//for _, video := range videoList {
+	//	id := strconv.FormatInt(video.User.Id, 10)
+	//	followCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowCountPrefix+id).Val(), 10, 64)
+	//	followerCount, _ := strconv.ParseInt(common.Rdb.Get(c, common.UserFollowerCountPrefix+id).Val(), 10, 64)
+	//	video.User.FollowCount = followCount
+	//	video.User.FollowerCount = followerCount
+	//}
 	c.JSON(http.StatusOK, VideoListResponse{
 		Response: model.Response{
 			StatusCode: 0,

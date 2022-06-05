@@ -30,8 +30,8 @@ func DeleteFavorite(userId, videoId int64) bool {
 	return true
 }
 
-func GetVideosByIds(videoIds []int64) []model.Video {
-	var videos []model.Video
+func GetVideosByIds(videoIds []int64) []*model.Video {
+	var videos []*model.Video
 	res := common.Db.Table(" t_video ").
 		Select("t_video.id, t_video.play_url, t_video.cover_url,"+
 			"(select count(*) from t_favorite f where f.video_id = t_video.id) favorite_count,"+
@@ -47,8 +47,8 @@ func GetVideosByIds(videoIds []int64) []model.Video {
 	return videos
 }
 
-func GetFavoriteByUserId(userId int64) []model.Video {
-	var videos []model.Video
+func GetFavoriteByUserId(userId int64) []*model.Video {
+	var videos []*model.Video
 	//res := common.Db.Table("t_user").
 	//	Select("t_user.id, t_user.username, t_user.follow_count, t_user.follower_count, t_user.is_follow, "+
 	//		"tv.id, tv.play_url, tv.cover_url").

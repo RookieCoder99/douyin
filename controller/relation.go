@@ -28,6 +28,9 @@ func RelationAction(c *gin.Context) {
 	json.Unmarshal([]byte(userJson), &tUser)
 	toUid, _ := strconv.ParseInt(toUserId, 10, 64)
 	if actionType == "1" {
+		common.Rdb.Incr(c, common.UserFollowCountPrefix+strconv.FormatInt(tUser.ID, 10))
+		common.Rdb.Incr(c, common.UserFollowerCountPrefix+toUserId)
+
 		res := service.AddFollow(tUser.ID, toUid)
 		if !res {
 			c.JSON(http.StatusOK, model.Response{

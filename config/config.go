@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/BurntSushi/toml"
+	"log"
 )
 
 type Config struct {
@@ -77,7 +78,7 @@ func InitConfig(args ...string) Config {
 	}
 	var config Config
 	if _, err := toml.DecodeFile(configPath, &config); err != nil {
-		panic("config.toml配置文件读取失败:" + err.Error())
+		log.Println("config.toml配置文件读取失败:", err)
 	}
 	return config
 }

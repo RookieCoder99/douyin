@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type LoginRequest struct {
@@ -77,6 +78,9 @@ func Register(c *gin.Context) {
 	tJson, _ := json.Marshal(&tUser)
 	tStr := string(tJson)
 	common.Rdb.Set(c, common.UserLoginPrefix+tUser.Token, tStr, 0)
+
+	common.Rdb.Set(c, common.UserFollowCountPrefix+strconv.FormatInt(tUser.ID, 10), 0, 0)
+	common.Rdb.Set(c, common.UserFollowerCountPrefix+strconv.FormatInt(tUser.ID, 10), 0, 0)
 
 	log.Printf("用户名%v注册成功", username)
 	//common.Resp2(c,common.OK, common.RespMsg[common.OK], "user_id" )

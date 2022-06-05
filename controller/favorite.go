@@ -23,7 +23,9 @@ func FavoriteAction(c *gin.Context) {
 	}
 	var tUser model.TUser
 	json.Unmarshal([]byte(userJson), &tUser)
+
 	vId, _ := strconv.ParseInt(videoId, 10, 64)
+
 	if actionTYpe == "1" {
 		res := service.InsertFavorite(c, tUser.ID, vId)
 		if !res {
@@ -41,6 +43,7 @@ func FavoriteAction(c *gin.Context) {
 		})
 	} else if actionTYpe == "2" {
 		res := service.DeleteFavorite(c, tUser.ID, vId)
+
 		if !res {
 			log.Printf("%v 视频取消点赞失败", vId)
 			c.JSON(http.StatusOK, model.Response{
