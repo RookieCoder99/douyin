@@ -18,6 +18,11 @@ type CommentListResponse struct {
 	CommentList []model.Comment `json:"comment_list,omitempty"`
 }
 
+type CommentResponse struct {
+	model.Response
+	Comment model.Comment `json:"comment,omitempty"`
+}
+
 func CommentAction(c *gin.Context) {
 	token := c.Query("token")
 	videoId := c.Query("video_id")
@@ -34,11 +39,21 @@ func CommentAction(c *gin.Context) {
 	}
 	var tUser model.TUser
 	json.Unmarshal([]byte(userJson), &tUser)
-	vId, _ := strconv.ParseInt(videoId, 10, 64)
+	vId, err := strconv.ParseInt(videoId, 10, 64)
+
+	if err != nil {
+		log.Println("videoId params error!")
+		log.Println(err)
+		c.JSON(http.StatusOK, model.Response{
+			StatusCode: common.ParamInvalid,
+			StatusMsg:  common.RespMsg[common.ParamInvalid],
+		})
+		return
+	}
 	if actionType == "1" {
 		// 添加评论
 		comment := service.CreateAndReturnComment(tUser.ID, vId, commentText)
-
+		log.Println(comment)
 		if comment == nil {
 
 			c.JSON(http.StatusOK, model.Response{
@@ -47,12 +62,17 @@ func CommentAction(c *gin.Context) {
 			})
 			return
 		}
+
 		// 添加评论到redis中
 		commentJson, _ := json.Marshal(comment)
 		common.Rdb.SAdd(c, commentPrev+videoId, commentJson)
-		c.JSON(http.StatusOK, model.Response{
-			StatusCode: common.OK,
-			StatusMsg:  common.RespMsg[common.OK],
+
+		c.JSON(http.StatusOK, CommentResponse{
+			Response: model.Response{
+				StatusCode: common.OK,
+				StatusMsg:  common.RespMsg[common.OK],
+			},
+			Comment: *comment,
 		})
 	} else if actionType == "2" {
 		// 删除评论

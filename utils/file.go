@@ -79,7 +79,7 @@ func UploadToQiNiu(file *multipart.FileHeader) (int, string, string) {
 	}
 
 	url := ImgUrl + ret.Key // 返回上传后的文件访问路径
-	imgUrl := ImgUrl + "XlMSXysTOOFC84dEL3HgtjKxtAY=" + ret.Hash
+	imgUrl := ImgUrl + "XlMSXysTOOFC84dEL3HgtjKxtAY=/" + ret.Hash
 	return 0, url, imgUrl
 }
 

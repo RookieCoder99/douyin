@@ -61,6 +61,7 @@ var RespMsg = map[int32]string{
 	OK:                  "成功",
 	ParamInvalid:        "参数不合法",
 	WrongPassword:       "密码错误",
+	UserNotExisted:      "用户不存在",
 	UploadError:         "视频上传失败",
 	FavoriteActionError: "点赞失败",
 	FavoriteCancelError: "点赞取消失败",
